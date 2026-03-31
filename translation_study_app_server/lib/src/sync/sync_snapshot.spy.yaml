@@ -1,0 +1,4 @@
+class: SyncSnapshot
+fields:
+  histories: List<SyncTranslationHistoryData>
+  reviewResults: List<SyncReviewResultData>

@@ -1,0 +1,15 @@
+class: UserReviewResult
+serverOnly: true
+table: user_review_result
+fields:
+  userIdentifier: String
+  clientRecordId: String
+  historyClientRecordId: String
+  answerText: String
+  grade: String
+  reviewedAt: DateTime
+  updatedAt: DateTime
+indexes:
+  user_review_result_user_client_record_idx:
+    fields: userIdentifier, clientRecordId
+    unique: true

@@ -1,0 +1,15 @@
+# サーバー/クライアント共通で生成されるシリアライズモデル名。
+class: TranslationResult
+
+# モデルが保持するフィールド定義。
+fields:
+  # 翻訳前のテキスト。
+  sourceText: String
+  # 翻訳後のテキスト。
+  translatedText: String
+  # 翻訳前言語コード（例: ja, en）。
+  sourceLanguage: String
+  # 翻訳後言語コード（例: en, fr）。
+  targetLanguage: String
+  # 翻訳作成日時（UTCを想定）。
+  createdAt: DateTime

@@ -1,0 +1,18 @@
+class: UserTranslationHistory
+serverOnly: true
+table: user_translation_history
+fields:
+  userIdentifier: String
+  clientRecordId: String
+  sourceText: String
+  translatedText: String
+  sourceLanguage: String
+  targetLanguage: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  isFavorite: bool
+  tagsJson: String
+indexes:
+  user_translation_history_user_client_record_idx:
+    fields: userIdentifier, clientRecordId
+    unique: true

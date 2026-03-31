@@ -1,0 +1,8 @@
+class: SyncReviewResultData
+fields:
+  clientRecordId: String
+  historyClientRecordId: String
+  answerText: String
+  grade: String
+  reviewedAt: DateTime
+  updatedAt: DateTime

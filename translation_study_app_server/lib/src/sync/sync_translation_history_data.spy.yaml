@@ -1,0 +1,11 @@
+class: SyncTranslationHistoryData
+fields:
+  clientRecordId: String
+  sourceText: String
+  translatedText: String
+  sourceLanguage: String
+  targetLanguage: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  isFavorite: bool
+  tags: List<String>
