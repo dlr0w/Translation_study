@@ -619,6 +619,19 @@ class ReviewScreenState extends State<ReviewScreen> {
                 child: ElevatedButton(
                   onPressed: _isSavingResult
                       ? null
+                      : () => _recordAnswer(ReviewGrade.partial),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: scheme.error,
+                    foregroundColor: scheme.onError,
+                  ),
+                  child: const Text('△'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _isSavingResult
+                      ? null
                       : () => _recordAnswer(ReviewGrade.incorrect),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: scheme.error,
@@ -626,7 +639,7 @@ class ReviewScreenState extends State<ReviewScreen> {
                   ),
                   child: const Text('×'),
                 ),
-              ),
+              ),              
             ],
           )
         else
@@ -642,6 +655,9 @@ class ReviewScreenState extends State<ReviewScreen> {
   Widget _buildResultView() {
     final correctItems = _sessionResults
         .where((item) => item.grade == ReviewGrade.correct)
+        .toList();
+    final partialItems = _sessionResults
+        .where((item) => item.grade == ReviewGrade.partia)
         .toList();
     final incorrectItems = _sessionResults
         .where((item) => item.grade == ReviewGrade.incorrect)
@@ -990,11 +1006,13 @@ class _SessionSummaryCard extends StatelessWidget {
   const _SessionSummaryCard({
     required this.totalCount,
     required this.correctCount,
+    required this.partialCount,
     required this.incorrectCount,
   });
 
   final int totalCount;
   final int correctCount;
+  final int partialCount;
   final int incorrectCount;
 
   @override
@@ -1022,11 +1040,14 @@ class _SessionSummaryCard extends StatelessWidget {
 class _AnsweredReviewItem {
   const _AnsweredReviewItem({
     required this.history,
+    required this.answerText,
     required this.grade,
   });
 
   // 採点対象の翻訳履歴。
   final TranslationHistoryEntry history;
+  // 回答本文。
+  final String answerText;
   // 自己採点結果。
   final ReviewGrade grade;
 }

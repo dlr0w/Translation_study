@@ -16,12 +16,10 @@ import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _i4;
-import 'package:translation_study_app_server/src/generated/greetings/greeting.dart'
-    as _i5;
 import 'package:translation_study_app_server/src/generated/sync/sync_snapshot.dart'
-    as _i6;
+    as _i5;
 import 'package:translation_study_app_server/src/generated/translation/translation_result.dart'
-    as _i7;
+    as _i6;
 import 'package:translation_study_app_server/src/generated/protocol.dart';
 import 'package:translation_study_app_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -133,8 +131,6 @@ class TestEndpoints {
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
-  late final _GreetingEndpoint greeting;
-
   late final _SyncEndpoint sync;
 
   late final _SystemEndpoint system;
@@ -154,10 +150,6 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     jwtRefresh = _JwtRefreshEndpoint(
-      endpoints,
-      serializationManager,
-    );
-    greeting = _GreetingEndpoint(
       endpoints,
       serializationManager,
     );
@@ -494,48 +486,6 @@ class _JwtRefreshEndpoint {
   }
 }
 
-class _GreetingEndpoint {
-  _GreetingEndpoint(
-    this._endpointDispatch,
-    this._serializationManager,
-  );
-
-  final _i2.EndpointDispatch _endpointDispatch;
-
-  final _i2.SerializationManager _serializationManager;
-
-  _i3.Future<_i5.Greeting> hello(
-    _i1.TestSessionBuilder sessionBuilder,
-    String name,
-  ) async {
-    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
-      var _localUniqueSession =
-          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'greeting',
-            method: 'hello',
-          );
-      try {
-        var _localCallContext = await _endpointDispatch.getMethodCallContext(
-          createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'greeting',
-          methodName: 'hello',
-          parameters: _i1.testObjectToJson({'name': name}),
-          serializationManager: _serializationManager,
-        );
-        var _localReturnValue =
-            await (_localCallContext.method.call(
-                  _localUniqueSession,
-                  _localCallContext.arguments,
-                )
-                as _i3.Future<_i5.Greeting>);
-        return _localReturnValue;
-      } finally {
-        await _localUniqueSession.close();
-      }
-    });
-  }
-}
-
 class _SyncEndpoint {
   _SyncEndpoint(
     this._endpointDispatch,
@@ -546,9 +496,9 @@ class _SyncEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i6.SyncSnapshot> synchronize(
+  _i3.Future<_i5.SyncSnapshot> synchronize(
     _i1.TestSessionBuilder sessionBuilder, {
-    required _i6.SyncSnapshot localSnapshot,
+    required _i5.SyncSnapshot localSnapshot,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -569,7 +519,7 @@ class _SyncEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i6.SyncSnapshot>);
+                as _i3.Future<_i5.SyncSnapshot>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -627,7 +577,7 @@ class _TranslationEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.TranslationResult> translate(
+  _i3.Future<_i6.TranslationResult> translate(
     _i1.TestSessionBuilder sessionBuilder, {
     required String text,
     required String sourceLanguage,
@@ -656,7 +606,7 @@ class _TranslationEndpoint {
                   _localUniqueSession,
                   _localCallContext.arguments,
                 )
-                as _i3.Future<_i7.TranslationResult>);
+                as _i3.Future<_i6.TranslationResult>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

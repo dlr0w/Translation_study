@@ -16,14 +16,12 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _i3;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _i4;
-import 'greetings/greeting.dart' as _i5;
-import 'sync/sync_review_result_data.dart' as _i6;
-import 'sync/sync_snapshot.dart' as _i7;
-import 'sync/sync_translation_history_data.dart' as _i8;
-import 'sync/user_review_result.dart' as _i9;
-import 'sync/user_translation_history.dart' as _i10;
-import 'translation/translation_result.dart' as _i11;
-export 'greetings/greeting.dart';
+import 'sync/sync_review_result_data.dart' as _i5;
+import 'sync/sync_snapshot.dart' as _i6;
+import 'sync/sync_translation_history_data.dart' as _i7;
+import 'sync/user_review_result.dart' as _i8;
+import 'sync/user_translation_history.dart' as _i9;
+import 'translation/translation_result.dart' as _i10;
 export 'sync/sync_review_result_data.dart';
 export 'sync/sync_snapshot.dart';
 export 'sync/sync_translation_history_data.dart';
@@ -272,62 +270,56 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
 
-    if (t == _i5.Greeting) {
-      return _i5.Greeting.fromJson(data) as T;
+    if (t == _i5.SyncReviewResultData) {
+      return _i5.SyncReviewResultData.fromJson(data) as T;
     }
-    if (t == _i6.SyncReviewResultData) {
-      return _i6.SyncReviewResultData.fromJson(data) as T;
+    if (t == _i6.SyncSnapshot) {
+      return _i6.SyncSnapshot.fromJson(data) as T;
     }
-    if (t == _i7.SyncSnapshot) {
-      return _i7.SyncSnapshot.fromJson(data) as T;
+    if (t == _i7.SyncTranslationHistoryData) {
+      return _i7.SyncTranslationHistoryData.fromJson(data) as T;
     }
-    if (t == _i8.SyncTranslationHistoryData) {
-      return _i8.SyncTranslationHistoryData.fromJson(data) as T;
+    if (t == _i8.UserReviewResult) {
+      return _i8.UserReviewResult.fromJson(data) as T;
     }
-    if (t == _i9.UserReviewResult) {
-      return _i9.UserReviewResult.fromJson(data) as T;
+    if (t == _i9.UserTranslationHistory) {
+      return _i9.UserTranslationHistory.fromJson(data) as T;
     }
-    if (t == _i10.UserTranslationHistory) {
-      return _i10.UserTranslationHistory.fromJson(data) as T;
+    if (t == _i10.TranslationResult) {
+      return _i10.TranslationResult.fromJson(data) as T;
     }
-    if (t == _i11.TranslationResult) {
-      return _i11.TranslationResult.fromJson(data) as T;
-    }
-    if (t == _i1.getType<_i5.Greeting?>()) {
-      return (data != null ? _i5.Greeting.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i6.SyncReviewResultData?>()) {
-      return (data != null ? _i6.SyncReviewResultData.fromJson(data) : null)
+    if (t == _i1.getType<_i5.SyncReviewResultData?>()) {
+      return (data != null ? _i5.SyncReviewResultData.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i7.SyncSnapshot?>()) {
-      return (data != null ? _i7.SyncSnapshot.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i6.SyncSnapshot?>()) {
+      return (data != null ? _i6.SyncSnapshot.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.SyncTranslationHistoryData?>()) {
+    if (t == _i1.getType<_i7.SyncTranslationHistoryData?>()) {
       return (data != null
-              ? _i8.SyncTranslationHistoryData.fromJson(data)
+              ? _i7.SyncTranslationHistoryData.fromJson(data)
               : null)
           as T;
     }
-    if (t == _i1.getType<_i9.UserReviewResult?>()) {
-      return (data != null ? _i9.UserReviewResult.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.UserReviewResult?>()) {
+      return (data != null ? _i8.UserReviewResult.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i10.UserTranslationHistory?>()) {
-      return (data != null ? _i10.UserTranslationHistory.fromJson(data) : null)
+    if (t == _i1.getType<_i9.UserTranslationHistory?>()) {
+      return (data != null ? _i9.UserTranslationHistory.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i11.TranslationResult?>()) {
-      return (data != null ? _i11.TranslationResult.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i10.TranslationResult?>()) {
+      return (data != null ? _i10.TranslationResult.fromJson(data) : null) as T;
     }
-    if (t == List<_i8.SyncTranslationHistoryData>) {
+    if (t == List<_i7.SyncTranslationHistoryData>) {
       return (data as List)
-              .map((e) => deserialize<_i8.SyncTranslationHistoryData>(e))
+              .map((e) => deserialize<_i7.SyncTranslationHistoryData>(e))
               .toList()
           as T;
     }
-    if (t == List<_i6.SyncReviewResultData>) {
+    if (t == List<_i5.SyncReviewResultData>) {
       return (data as List)
-              .map((e) => deserialize<_i6.SyncReviewResultData>(e))
+              .map((e) => deserialize<_i5.SyncReviewResultData>(e))
               .toList()
           as T;
     }
@@ -348,13 +340,12 @@ class Protocol extends _i1.SerializationManagerServer {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _i5.Greeting => 'Greeting',
-      _i6.SyncReviewResultData => 'SyncReviewResultData',
-      _i7.SyncSnapshot => 'SyncSnapshot',
-      _i8.SyncTranslationHistoryData => 'SyncTranslationHistoryData',
-      _i9.UserReviewResult => 'UserReviewResult',
-      _i10.UserTranslationHistory => 'UserTranslationHistory',
-      _i11.TranslationResult => 'TranslationResult',
+      _i5.SyncReviewResultData => 'SyncReviewResultData',
+      _i6.SyncSnapshot => 'SyncSnapshot',
+      _i7.SyncTranslationHistoryData => 'SyncTranslationHistoryData',
+      _i8.UserReviewResult => 'UserReviewResult',
+      _i9.UserTranslationHistory => 'UserTranslationHistory',
+      _i10.TranslationResult => 'TranslationResult',
       _ => null,
     };
   }
@@ -372,19 +363,17 @@ class Protocol extends _i1.SerializationManagerServer {
     }
 
     switch (data) {
-      case _i5.Greeting():
-        return 'Greeting';
-      case _i6.SyncReviewResultData():
+      case _i5.SyncReviewResultData():
         return 'SyncReviewResultData';
-      case _i7.SyncSnapshot():
+      case _i6.SyncSnapshot():
         return 'SyncSnapshot';
-      case _i8.SyncTranslationHistoryData():
+      case _i7.SyncTranslationHistoryData():
         return 'SyncTranslationHistoryData';
-      case _i9.UserReviewResult():
+      case _i8.UserReviewResult():
         return 'UserReviewResult';
-      case _i10.UserTranslationHistory():
+      case _i9.UserTranslationHistory():
         return 'UserTranslationHistory';
-      case _i11.TranslationResult():
+      case _i10.TranslationResult():
         return 'TranslationResult';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -408,26 +397,23 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'Greeting') {
-      return deserialize<_i5.Greeting>(data['data']);
-    }
     if (dataClassName == 'SyncReviewResultData') {
-      return deserialize<_i6.SyncReviewResultData>(data['data']);
+      return deserialize<_i5.SyncReviewResultData>(data['data']);
     }
     if (dataClassName == 'SyncSnapshot') {
-      return deserialize<_i7.SyncSnapshot>(data['data']);
+      return deserialize<_i6.SyncSnapshot>(data['data']);
     }
     if (dataClassName == 'SyncTranslationHistoryData') {
-      return deserialize<_i8.SyncTranslationHistoryData>(data['data']);
+      return deserialize<_i7.SyncTranslationHistoryData>(data['data']);
     }
     if (dataClassName == 'UserReviewResult') {
-      return deserialize<_i9.UserReviewResult>(data['data']);
+      return deserialize<_i8.UserReviewResult>(data['data']);
     }
     if (dataClassName == 'UserTranslationHistory') {
-      return deserialize<_i10.UserTranslationHistory>(data['data']);
+      return deserialize<_i9.UserTranslationHistory>(data['data']);
     }
     if (dataClassName == 'TranslationResult') {
-      return deserialize<_i11.TranslationResult>(data['data']);
+      return deserialize<_i10.TranslationResult>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -465,10 +451,10 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i9.UserReviewResult:
-        return _i9.UserReviewResult.t;
-      case _i10.UserTranslationHistory:
-        return _i10.UserTranslationHistory.t;
+      case _i8.UserReviewResult:
+        return _i8.UserReviewResult.t;
+      case _i9.UserTranslationHistory:
+        return _i9.UserTranslationHistory.t;
     }
     return null;
   }

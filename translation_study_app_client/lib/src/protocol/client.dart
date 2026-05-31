@@ -16,17 +16,13 @@ import 'package:serverpod_client/serverpod_client.dart' as _i2;
 import 'dart:async' as _i3;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _i4;
-import 'package:translation_study_app_client/src/protocol/greetings/greeting.dart'
-    as _i5;
 import 'package:translation_study_app_client/src/protocol/sync/sync_snapshot.dart'
-    as _i6;
+    as _i5;
 import 'package:translation_study_app_client/src/protocol/translation/translation_result.dart'
-    as _i7;
-import 'protocol.dart' as _i8;
+    as _i6;
+import 'protocol.dart' as _i7;
 
-/// By extending [EmailIdpBaseEndpoint], the email identity provider endpoints
-/// are made available on the server and enable the corresponding sign-in widget
-/// on the client.
+/// メール認証用エンドポイントをそのまま使用するラッパー。
 /// {@category Endpoint}
 class EndpointEmailIdp extends _i1.EndpointEmailIdpBase {
   EndpointEmailIdp(_i2.EndpointCaller caller) : super(caller);
@@ -207,8 +203,7 @@ class EndpointEmailIdp extends _i1.EndpointEmailIdpBase {
   );
 }
 
-/// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
-/// is made available on the server and enables automatic token refresh on the client.
+/// JWTの自動更新エンドポイントをそのまま公開する薄いラッパー。
 /// {@category Endpoint}
 class EndpointJwtRefresh extends _i4.EndpointRefreshJwtTokens {
   EndpointJwtRefresh(_i2.EndpointCaller caller) : super(caller);
@@ -245,24 +240,6 @@ class EndpointJwtRefresh extends _i4.EndpointRefreshJwtTokens {
   );
 }
 
-/// This is an example endpoint that returns a greeting message through
-/// its [hello] method.
-/// {@category Endpoint}
-class EndpointGreeting extends _i2.EndpointRef {
-  EndpointGreeting(_i2.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'greeting';
-
-  /// Returns a personalized greeting message: "Hello {name}".
-  _i3.Future<_i5.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i5.Greeting>(
-        'greeting',
-        'hello',
-        {'name': name},
-      );
-}
-
 /// {@category Endpoint}
 class EndpointSync extends _i2.EndpointRef {
   EndpointSync(_i2.EndpointCaller caller) : super(caller);
@@ -270,9 +247,9 @@ class EndpointSync extends _i2.EndpointRef {
   @override
   String get name => 'sync';
 
-  _i3.Future<_i6.SyncSnapshot> synchronize({
-    required _i6.SyncSnapshot localSnapshot,
-  }) => caller.callServerEndpoint<_i6.SyncSnapshot>(
+  _i3.Future<_i5.SyncSnapshot> synchronize({
+    required _i5.SyncSnapshot localSnapshot,
+  }) => caller.callServerEndpoint<_i5.SyncSnapshot>(
     'sync',
     'synchronize',
     {'localSnapshot': localSnapshot},
@@ -300,11 +277,11 @@ class EndpointTranslation extends _i2.EndpointRef {
   @override
   String get name => 'translation';
 
-  _i3.Future<_i7.TranslationResult> translate({
+  _i3.Future<_i6.TranslationResult> translate({
     required String text,
     required String sourceLanguage,
     required String targetLanguage,
-  }) => caller.callServerEndpoint<_i7.TranslationResult>(
+  }) => caller.callServerEndpoint<_i6.TranslationResult>(
     'translation',
     'translate',
     {
@@ -346,7 +323,7 @@ class Client extends _i2.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
          host,
-         _i8.Protocol(),
+         _i7.Protocol(),
          securityContext: securityContext,
          streamingConnectionTimeout: streamingConnectionTimeout,
          connectionTimeout: connectionTimeout,
@@ -357,7 +334,6 @@ class Client extends _i2.ServerpodClientShared {
        ) {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
-    greeting = EndpointGreeting(this);
     sync = EndpointSync(this);
     system = EndpointSystem(this);
     translation = EndpointTranslation(this);
@@ -367,8 +343,6 @@ class Client extends _i2.ServerpodClientShared {
   late final EndpointEmailIdp emailIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
-
-  late final EndpointGreeting greeting;
 
   late final EndpointSync sync;
 
@@ -382,7 +356,6 @@ class Client extends _i2.ServerpodClientShared {
   Map<String, _i2.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
-    'greeting': greeting,
     'sync': sync,
     'system': system,
     'translation': translation,

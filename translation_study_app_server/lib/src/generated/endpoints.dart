@@ -13,16 +13,15 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../auth/email_idp_endpoint.dart' as _i2;
 import '../auth/jwt_refresh_endpoint.dart' as _i3;
-import '../greetings/greeting_endpoint.dart' as _i4;
-import '../sync/sync_endpoint.dart' as _i5;
-import '../system/system_endpoint.dart' as _i6;
-import '../translation/translation_endpoint.dart' as _i7;
+import '../sync/sync_endpoint.dart' as _i4;
+import '../system/system_endpoint.dart' as _i5;
+import '../translation/translation_endpoint.dart' as _i6;
 import 'package:translation_study_app_server/src/generated/sync/sync_snapshot.dart'
-    as _i8;
+    as _i7;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
-    as _i9;
+    as _i8;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
-    as _i10;
+    as _i9;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -40,25 +39,19 @@ class Endpoints extends _i1.EndpointDispatch {
           'jwtRefresh',
           null,
         ),
-      'greeting': _i4.GreetingEndpoint()
-        ..initialize(
-          server,
-          'greeting',
-          null,
-        ),
-      'sync': _i5.SyncEndpoint()
+      'sync': _i4.SyncEndpoint()
         ..initialize(
           server,
           'sync',
           null,
         ),
-      'system': _i6.SystemEndpoint()
+      'system': _i5.SystemEndpoint()
         ..initialize(
           server,
           'system',
           null,
         ),
-      'translation': _i7.TranslationEndpoint()
+      'translation': _i6.TranslationEndpoint()
         ..initialize(
           server,
           'translation',
@@ -269,30 +262,6 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['greeting'] = _i1.EndpointConnector(
-      name: 'greeting',
-      endpoint: endpoints['greeting']!,
-      methodConnectors: {
-        'hello': _i1.MethodConnector(
-          name: 'hello',
-          params: {
-            'name': _i1.ParameterDescription(
-              name: 'name',
-              type: _i1.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _i1.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['greeting'] as _i4.GreetingEndpoint).hello(
-                session,
-                params['name'],
-              ),
-        ),
-      },
-    );
     connectors['sync'] = _i1.EndpointConnector(
       name: 'sync',
       endpoint: endpoints['sync']!,
@@ -302,7 +271,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'localSnapshot': _i1.ParameterDescription(
               name: 'localSnapshot',
-              type: _i1.getType<_i8.SyncSnapshot>(),
+              type: _i1.getType<_i7.SyncSnapshot>(),
               nullable: false,
             ),
           },
@@ -310,7 +279,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['sync'] as _i5.SyncEndpoint).synchronize(
+              ) async => (endpoints['sync'] as _i4.SyncEndpoint).synchronize(
                 session,
                 localSnapshot: params['localSnapshot'],
               ),
@@ -329,7 +298,7 @@ class Endpoints extends _i1.EndpointDispatch {
                 _i1.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['system'] as _i6.SystemEndpoint).health(session),
+                  (endpoints['system'] as _i5.SystemEndpoint).health(session),
         ),
       },
     );
@@ -360,7 +329,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (
                 _i1.Session session,
                 Map<String, dynamic> params,
-              ) async => (endpoints['translation'] as _i7.TranslationEndpoint)
+              ) async => (endpoints['translation'] as _i6.TranslationEndpoint)
                   .translate(
                     session,
                     text: params['text'],
@@ -370,9 +339,9 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth_idp'] = _i9.Endpoints()
+    modules['serverpod_auth_idp'] = _i8.Endpoints()
       ..initializeEndpoints(server);
-    modules['serverpod_auth_core'] = _i10.Endpoints()
+    modules['serverpod_auth_core'] = _i9.Endpoints()
       ..initializeEndpoints(server);
   }
 }
