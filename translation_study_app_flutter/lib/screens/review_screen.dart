@@ -243,7 +243,7 @@ class ReviewScreenState extends State<ReviewScreen> {
 
     final nextResults = [
       ..._sessionResults,
-      _AnsweredReviewItem(history: question, grade: grade),
+      _AnsweredReviewItem(history: question, answerText: '', grade: grade),
     ];
     final isLastQuestion =
         _currentQuestionIndex >= _sessionQuestions.length - 1;
@@ -621,8 +621,8 @@ class ReviewScreenState extends State<ReviewScreen> {
                       ? null
                       : () => _recordAnswer(ReviewGrade.partial),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: scheme.error,
-                    foregroundColor: scheme.onError,
+                    backgroundColor: scheme.tertiary,
+                    foregroundColor: scheme.onTertiary,
                   ),
                   child: const Text('△'),
                 ),
