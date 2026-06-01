@@ -69,6 +69,16 @@ class ReviewScreenState extends State<ReviewScreen> {
   // 現在進行中セッションのID。
   String? _activeSessionId;
 
+  // 回答入力欄のコントローラー。
+  late final TextEditingController _answerController;
+
+  @override
+  void dispose() {
+    _answerController.dispose();
+    super.dispose();
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -145,7 +155,7 @@ class ReviewScreenState extends State<ReviewScreen> {
   }
 
   // 指定候補を使って新しい出題セッションを始める。
-  void _startSession(List<TranslationHistoryEntry> histories) {
+  void _startSession(List<TranslationHistoryEntry> histories) {    
     if (histories.isEmpty) {
       return;
     }
@@ -154,6 +164,7 @@ class ReviewScreenState extends State<ReviewScreen> {
       ..shuffle(_random);
 
     setState(() {
+      _answerController.clear();
       _phase = _ReviewPhase.study;
       _sessionQuestions = questions;
       _sessionResults = const [];
@@ -216,7 +227,7 @@ class ReviewScreenState extends State<ReviewScreen> {
 
     final result = ReviewResultEntry(
       historyId: question.id!,
-      answerText: '',
+      answerText: _answerController.text,
       grade: grade,
       reviewedAt: DateTime.now(),
       sessionId: sessionId,
@@ -259,6 +270,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         _phase = _ReviewPhase.result;
         _activeSessionId = null;
       } else {
+         _answerController.clear();
         _currentQuestionIndex += 1;
       }
     });
@@ -275,6 +287,7 @@ class ReviewScreenState extends State<ReviewScreen> {
     }
 
     setState(() {
+       _answerController.clear();
       _phase = _ReviewPhase.setup;
       _sessionQuestions = const [];
       _sessionResults = const [];
@@ -449,7 +462,7 @@ class ReviewScreenState extends State<ReviewScreen> {
     return source
         .map(
           (item) => item.history.id == updated.id
-              ? _AnsweredReviewItem(history: updated, grade: item.grade)
+              ? _AnsweredReviewItem(history: updated, answerText: item.answerText, grade: item.grade)
               : item,
         )
         .toList();
@@ -602,6 +615,13 @@ class ReviewScreenState extends State<ReviewScreen> {
         if (_isAnswerShown)
           Row(
             children: [
+              TextField(
+                controller: _answerController,
+                decoration: const InputDecoration(
+                  hintText: '回答を入力してください',
+                ),
+              ),
+              const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
                   onPressed: _isSavingResult
@@ -657,7 +677,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         .where((item) => item.grade == ReviewGrade.correct)
         .toList();
     final partialItems = _sessionResults
-        .where((item) => item.grade == ReviewGrade.partia)
+        .where((item) => item.grade == ReviewGrade.partial)
         .toList();
     final incorrectItems = _sessionResults
         .where((item) => item.grade == ReviewGrade.incorrect)
@@ -672,6 +692,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         const SizedBox(height: 12),
         _SessionSummaryCard(
           totalCount: _sessionResults.length,
+          partialCount: partialItems.length,
           correctCount: correctItems.length,
           incorrectCount: incorrectItems.length,
         ),
