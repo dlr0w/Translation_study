@@ -212,6 +212,7 @@ class ReviewScreenState extends State<ReviewScreen> {
   // 自己採点を保存し、次問題か結果画面へ進める。
   Future<void> _recordAnswer(ReviewGrade grade) async {
     final question = _currentQuestion;
+    final answerText = _answerController.text;
     final sessionId = _activeSessionId;
 
     if (question == null || question.id == null || sessionId == null) {
@@ -227,7 +228,7 @@ class ReviewScreenState extends State<ReviewScreen> {
 
     final result = ReviewResultEntry(
       historyId: question.id!,
-      answerText: _answerController.text,
+      answerText: answerText,
       grade: grade,
       reviewedAt: DateTime.now(),
       sessionId: sessionId,
@@ -254,7 +255,7 @@ class ReviewScreenState extends State<ReviewScreen> {
 
     final nextResults = [
       ..._sessionResults,
-      _AnsweredReviewItem(history: question, answerText: '', grade: grade),
+      _AnsweredReviewItem(history: question, answerText: answerText, grade: grade),
     ];
     final isLastQuestion =
         _currentQuestionIndex >= _sessionQuestions.length - 1;
@@ -709,7 +710,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         ),
         const SizedBox(height: 16),
         _ReviewResultSection(
-          title: '正解一覧',
+          title: '正解一覧',                    
           emptyMessage: '正解はありません。',
           items: correctItems,
           onTap: _openHistoryDetail,
@@ -976,8 +977,12 @@ class _ReviewResultSection extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    item.history.translatedText,
-                    maxLines: 2,
+                    [
+                      item.history.translatedText,
+                      if (item.answerText.trim().isNotEmpty)
+                        '自分の回答: ${item.answerText.trim()}'
+                    ].join('\n'),                    
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: const Icon(Icons.chevron_right),
