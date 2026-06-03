@@ -54,11 +54,14 @@ class AuthMenuButton extends StatelessWidget {
                 _showSnackBar(messenger, 'ログインしました');
                 break;
               case _AuthMenuAction.signOut:
+                // ログアウト時にローカルの学習データを削除する。
                 await LocalHistoryRepository.instance.clearStudyData();
-                await client.auth.signOutDevice();
-                if (!messenger.mounted) {
+                // サインアウトの処理を行う
+                await client.auth.signOutDevice();                
+                if (!messenger.mounted) {                  //
                   return;
                 }
+                // ログアウト後に親ウィジェットへ再読込を促す。
                 await onDataChanged?.call();
                 _showSnackBar(messenger, 'ログアウトしました');
                 break;
