@@ -181,7 +181,7 @@ class LocalHistoryRepository {
     return tags;
   }
 
-  // ログアウト時にローカルの学習データを全消去する。
+   // ログアウト時にローカルの学習データを全消去する。
   Future<void> clearStudyData() async {
     final db = await _database();
     await _historyStore.delete(db);

@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../main.dart';
+import '../screens/sign_in_screen.dart';
+import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
+
+import '../main.dart';
 import '../repositories/local_history_repository.dart';
 import '../screens/sign_in_screen.dart';
+
 
 // ポップアップメニューから選ばれる操作。
 enum _AuthMenuAction {
@@ -53,7 +58,7 @@ class AuthMenuButton extends StatelessWidget {
                 }
                 _showSnackBar(messenger, 'ログインしました');
                 break;
-              case _AuthMenuAction.signOut:
+               case _AuthMenuAction.signOut:
                 // ログアウト時にローカルの学習データを削除する。
                 await LocalHistoryRepository.instance.clearStudyData();
                 // サインアウトの処理を行う
