@@ -10,4 +10,6 @@ workspace:
   - translation_study_app_flutter
 dependency_overrides:
   flutter_secure_storage: ^10.0.0
+dependencies:
+  flutter_local_notifications: ^21.0.0
 
