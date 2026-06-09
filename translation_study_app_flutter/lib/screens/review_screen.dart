@@ -83,6 +83,7 @@ class ReviewScreenState extends State<ReviewScreen> {
   void initState() {
     super.initState();
     _loadOverviewData();
+    _answerController = TextEditingController();
   }
 
   // タブ再選択時に必要なデータを読み直す。
@@ -616,10 +617,12 @@ class ReviewScreenState extends State<ReviewScreen> {
         if (_isAnswerShown)
           Row(
             children: [
-              TextField(
-                controller: _answerController,
-                decoration: const InputDecoration(
-                  hintText: '回答を入力してください',
+              Expanded(
+                child: TextField(
+                  controller: _answerController,
+                  decoration: const InputDecoration(
+                    hintText: '回答を入力してください',
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
