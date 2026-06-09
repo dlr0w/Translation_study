@@ -2,6 +2,7 @@ import 'package:translation_study_app_client/translation_study_app_client.dart';
 import 'package:flutter/material.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
+import 'package:translation_study_app_flutter/services/local_notification_service.dart';
 
 import 'screens/app_home_screen.dart';
 
@@ -14,6 +15,11 @@ late String serverUrl;
 void main() async {
   // `runApp`前にFlutter側の初期化を済ませる。
   WidgetsFlutterBinding.ensureInitialized();
+  // 通知サービスを初期化
+  await LocalNotificationService.instance.initiailze(onTap: (payload) {
+    // TODO: 後で通知をタップした時の処理を書く。
+    // payloadが'review_today'なら復習画面を開く。
+    }
 
   // 配布形態に応じた設定ファイル(assets/config.json)からAPI URLを読み込む。
   serverUrl = await getServerUrl();
