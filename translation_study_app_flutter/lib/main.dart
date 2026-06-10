@@ -16,7 +16,7 @@ void main() async {
   // `runApp`前にFlutter側の初期化を済ませる。
   WidgetsFlutterBinding.ensureInitialized();
   // 通知サービスを初期化
-  await LocalNotificationService.instance.initiailze(onTap: (payload) {
+  await LocalNotificationService.instance.initialize(onTap: (payload) {
     // TODO: 後で通知をタップした時の処理を書く。
     // payloadが'review_today'なら復習画面を開く。
     }
