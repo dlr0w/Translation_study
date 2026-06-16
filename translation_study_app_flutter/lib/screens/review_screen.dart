@@ -162,11 +162,14 @@ class ReviewScreenState extends State<ReviewScreen> {
 
     final questions = List<TranslationHistoryEntry>.from(histories)
       ..shuffle(_random);
+        
+    // 出題数を10問に絞る
+    final limitedQuestions = questions.take(10).toList();
 
     setState(() {
       _answerController.clear();
       _phase = _ReviewPhase.study;
-      _sessionQuestions = questions;
+      _sessionQuestions = limitedQuestions;
       _sessionResults = const [];
       _currentQuestionIndex = 0;
       _isAnswerShown = false;
@@ -192,12 +195,11 @@ class ReviewScreenState extends State<ReviewScreen> {
 
   // 直近セッションで不正解と怪しかった問題を再出題する。
   void _startIncorrectandPartialRetry() {
-    final incorrectHistories = _latestCompletedResults
+    final incorrectAndPartialHistories = _latestCompletedResults
         .where((item) => item.grade == ReviewGrade.incorrect || item.grade == ReviewGrade.partial)
         .map((item) => item.history)
         .toList();
-
-    _startSession(incorrectHistories);
+    _startSession(incorrectAndPartialHistories);
   }
 
   // 現在表示対象の問題を返す。
