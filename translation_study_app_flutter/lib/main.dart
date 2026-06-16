@@ -19,7 +19,7 @@ void main() async {
   await LocalNotificationService.instance.initialize(onTap: (payload) {
     // TODO: 後で通知をタップした時の処理を書く。
     // payloadが'review_today'なら復習画面を開く。
-    }
+    });
 
   // 配布形態に応じた設定ファイル(assets/config.json)からAPI URLを読み込む。
   serverUrl = await getServerUrl();
