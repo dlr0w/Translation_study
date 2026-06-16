@@ -190,6 +190,16 @@ class ReviewScreenState extends State<ReviewScreen> {
     _startSession(incorrectHistories);
   }
 
+  // 直近セッションで不正解と怪しかった問題を再出題する。
+  void _startIncorrectandPartialRetry() {
+    final incorrectHistories = _latestCompletedResults
+        .where((item) => item.grade == ReviewGrade.incorrect || item.grade == ReviewGrade.partial)
+        .map((item) => item.history)
+        .toList();
+
+    _startSession(incorrectHistories);
+  }
+
   // 現在表示対象の問題を返す。
   TranslationHistoryEntry? get _currentQuestion {
     if (_sessionQuestions.isEmpty) {
@@ -710,28 +720,43 @@ class ReviewScreenState extends State<ReviewScreen> {
           correctCount: correctItems.length,
           incorrectCount: incorrectItems.length,
         ),
-        const SizedBox(height: 16),
+        // ×の問題があった場合
+        const SizedBox(height: 16),      
         if (incorrectItems.isNotEmpty)
           ElevatedButton(
             onPressed: _startIncorrectRetry,
             child: Text('今回の×だけ復習 (${incorrectItems.length}件)'),
           ),
         if (incorrectItems.isNotEmpty) const SizedBox(height: 12),
+        // ×と△の問題があった場合
+        if (incorrectItems.isNotEmpty || partialItems.isEmpty)
+          ElevatedButton(
+            onPressed: _startIncorrectandPartialRetry,
+            child: Text('今回の×と△だけ復習 (${incorrectItems.length + partialItems.length}件)'),
+          ),
+        if (incorrectItems.isNotEmpty || partialItems.isEmpty) const SizedBox(height: 12),
         OutlinedButton(
           onPressed: _returnToSetup,
           child: const Text('条件設定に戻る'),
         ),
         const SizedBox(height: 16),
         _ReviewResultSection(
-          title: '正解一覧',
-          emptyMessage: '正解はありません。',
+          title: '正解した問題一覧',
+          emptyMessage: '正解した問題はありません。',
           items: correctItems,
           onTap: _openHistoryDetail,
         ),
         const SizedBox(height: 16),
         _ReviewResultSection(
-          title: '不正解一覧',
-          emptyMessage: '不正解はありません。',
+          title: 'あやしい問題一覧',
+          emptyMessage: '怪しい問題はありません。',
+          items: partialItems,
+          onTap: _openHistoryDetail,
+        ),
+        const SizedBox(height: 16),
+        _ReviewResultSection(
+          title: '間違えた問題一覧',
+          emptyMessage: '間違えた問題はありません。',
           items: incorrectItems,
           onTap: _openHistoryDetail,
         ),
