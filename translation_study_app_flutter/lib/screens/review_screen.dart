@@ -78,7 +78,6 @@ class ReviewScreenState extends State<ReviewScreen> {
     super.dispose();
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -156,7 +155,7 @@ class ReviewScreenState extends State<ReviewScreen> {
   }
 
   // 指定候補を使って新しい出題セッションを始める。
-  void _startSession(List<TranslationHistoryEntry> histories) {    
+  void _startSession(List<TranslationHistoryEntry> histories) {
     if (histories.isEmpty) {
       return;
     }
@@ -256,7 +255,11 @@ class ReviewScreenState extends State<ReviewScreen> {
 
     final nextResults = [
       ..._sessionResults,
-      _AnsweredReviewItem(history: question, answerText: answerText, grade: grade),
+      _AnsweredReviewItem(
+        history: question,
+        answerText: answerText,
+        grade: grade,
+      ),
     ];
     final isLastQuestion =
         _currentQuestionIndex >= _sessionQuestions.length - 1;
@@ -272,7 +275,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         _phase = _ReviewPhase.result;
         _activeSessionId = null;
       } else {
-         _answerController.clear();
+        _answerController.clear();
         _currentQuestionIndex += 1;
       }
     });
@@ -289,7 +292,7 @@ class ReviewScreenState extends State<ReviewScreen> {
     }
 
     setState(() {
-       _answerController.clear();
+      _answerController.clear();
       _phase = _ReviewPhase.setup;
       _sessionQuestions = const [];
       _sessionResults = const [];
@@ -464,7 +467,11 @@ class ReviewScreenState extends State<ReviewScreen> {
     return source
         .map(
           (item) => item.history.id == updated.id
-              ? _AnsweredReviewItem(history: updated, answerText: item.answerText, grade: item.grade)
+              ? _AnsweredReviewItem(
+                  history: updated,
+                  answerText: item.answerText,
+                  grade: item.grade,
+                )
               : item,
         )
         .toList();
@@ -585,6 +592,7 @@ class ReviewScreenState extends State<ReviewScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // 問題文
         Text(
           '問題 ${_currentQuestionIndex + 1} / ${_sessionQuestions.length}',
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -605,6 +613,16 @@ class ReviewScreenState extends State<ReviewScreen> {
               ...question.tags.map((tag) => Chip(label: Text(tag))),
             ],
           ),
+        const SizedBox(width: 12),
+        //　回答入力
+        Expanded(
+          child: TextField(
+            controller: _answerController,
+            decoration: const InputDecoration(
+              hintText: '回答を入力してください',
+            ),
+          ),
+        ),
         const SizedBox(height: 16),
         Expanded(
           child: _FlashCard(
@@ -617,15 +635,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         if (_isAnswerShown)
           Row(
             children: [
-              Expanded(
-                child: TextField(
-                  controller: _answerController,
-                  decoration: const InputDecoration(
-                    hintText: '回答を入力してください',
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
+              //
               Expanded(
                 child: ElevatedButton(
                   onPressed: _isSavingResult
@@ -663,7 +673,7 @@ class ReviewScreenState extends State<ReviewScreen> {
                   ),
                   child: const Text('×'),
                 ),
-              ),              
+              ),
             ],
           )
         else
@@ -713,7 +723,7 @@ class ReviewScreenState extends State<ReviewScreen> {
         ),
         const SizedBox(height: 16),
         _ReviewResultSection(
-          title: '正解一覧',                    
+          title: '正解一覧',
           emptyMessage: '正解はありません。',
           items: correctItems,
           onTap: _openHistoryDetail,
@@ -983,8 +993,8 @@ class _ReviewResultSection extends StatelessWidget {
                     [
                       item.history.translatedText,
                       if (item.answerText.trim().isNotEmpty)
-                        '自分の回答: ${item.answerText.trim()}'
-                    ].join('\n'),                    
+                        '自分の回答: ${item.answerText.trim()}',
+                    ].join('\n'),
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
