@@ -581,8 +581,16 @@ class ReviewScreenState extends State<ReviewScreen> {
           const Card(
             child: Padding(
               padding: EdgeInsets.all(16),
-              child: Text(
-                '条件に一致する翻訳履歴がありません。日付・タグ・お気に入り条件を見直してください。',
+              // TODO 翻訳タブに遷移する導線を作成する。            
+              child: Row(
+                children: [
+                  Text(
+                    '条件に一致する翻訳履歴がありません。日付・タグ・お気に入り条件を見直してください。',
+                  ),
+                  Text(
+                    'または翻訳タブで文章を翻訳してください。',
+                  ),
+                ],
               ),
             ),
           ),
