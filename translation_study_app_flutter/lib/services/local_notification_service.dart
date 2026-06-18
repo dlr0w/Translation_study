@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // このクラスの責務
@@ -62,14 +65,36 @@ class LocalNotificationService {
       // アプリがフォアグラウンドの状態で通知をタップした際の処理
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
       // アプリがバックグラウンドの状態で通知をタップした際の処理
-      onDidReceiveBackgroundNotificationResponse: _onDidReceiveBackgroundNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse:
+          _onDidReceiveBackgroundNotificationResponse,
     );
 
+    if (Platform.isIOS) {
+      await _requestIOSPermissions();
+    } else if (Platform.isAndroid) {
+      await _requestAndroidPermissions();
+    } else if (kIsWeb) {
+      return;
+    } else {
+      debugPrint('通知権限のリクエストはサポートされていません');
+    }
   }
 
-  // 通知を出してよいか、Android/iOSに確認
-  Future<void> requestPermissions() async {
-    // 通知を出してよいか、Android/iOSに確認
+  // 通知を出してよいか、iOSに確認
+  Future<void> _requestIOSPermissions() async {
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<void> _requestAndroidPermissions() async {
+    // 通知を出してよいか、Androidに確認
     await _plugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
