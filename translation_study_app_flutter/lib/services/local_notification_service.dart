@@ -14,11 +14,11 @@ class LocalNotificationService {
   static final LocalNotificationService instance = LocalNotificationService._();
 
   // 通知プラグインのインスタンス
-  final FlutterLocalNotificationsPlugin _plugin =
+  static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
   // 通知プラグインを初期化
-  Future<void> initialize({
+  static Future<void> initialize({
     required void Function(String? payload) onTap,
   }) async {
     // TODO: 通知プラグインを初期化
@@ -38,6 +38,7 @@ class LocalNotificationService {
           // iOS-specific settings
           requestCarPlayPermission: true,
         );
+
     // MAC OS
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings();
@@ -57,18 +58,20 @@ class LocalNotificationService {
           android: initializationSettingsAndroid,
           iOS: initializationSettingsIOS,
           macOS: initializationSettingsDarwin,
-          windows: initializationSettingsWindows,
+          windows: initializationSettingsWindows,          
         );
 
+    // プラグインの初期化
     await _plugin.initialize(
       settings: initializationSettings,
       // アプリがフォアグラウンドの状態で通知をタップした際の処理
-      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+      onDidReceiveNotificationResponse: _onDidReceiveNotificationResponse,
       // アプリがバックグラウンドの状態で通知をタップした際の処理
       onDidReceiveBackgroundNotificationResponse:
           _onDidReceiveBackgroundNotificationResponse,
     );
 
+    // プラットフォームごとの権限設定
     if (Platform.isIOS) {
       await _requestIOSPermissions();
     } else if (Platform.isAndroid) {
@@ -81,7 +84,7 @@ class LocalNotificationService {
   }
 
   // 通知を出してよいか、iOSに確認
-  Future<void> _requestIOSPermissions() async {
+  static Future<void> _requestIOSPermissions() async {
     await _plugin
         .resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin
@@ -93,7 +96,7 @@ class LocalNotificationService {
         );
   }
 
-  Future<void> _requestAndroidPermissions() async {
+  static Future<void> _requestAndroidPermissions() async {
     // 通知を出してよいか、Androidに確認
     await _plugin
         .resolvePlatformSpecificImplementation<
@@ -102,12 +105,42 @@ class LocalNotificationService {
         ?.requestNotificationsPermission();
   }
 
+  // 通知のタップ時の処理
+  static Future<void> _onDidReceiveNotificationResponse(NotificationResponse response) async {
+    // ここに処理を記載
+    debugPrint('onDidReceiveNotificationResponse: $response');    
+    // final String? payload = notificationResponse.payload;
+    // if (notificationResponse.payload != null) {
+    //   debugPrint('notification payload: $payload');
+    // }
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
+    // );
+  }
+
+  // バックグラウンドで通知を受け取った時の処理
+  static Future<void> _onDidReceiveBackgroundNotificationResponse(NotificationResponse response) async {
+    debugPrint('onDidReceiveBackgroundNotificationResponse: $response');
+  }
+
   // 毎日20時通知を予約
-  Future<void> scheduleDailyReviewReminder() async {
+  static Future<void> scheduleDailyReviewReminder() async {
     // TODO: 毎日20時通知を予約
   }
   // 毎日20時通知をキャンセル
-  Future<void> cancelDailyReviewReminder() async {
+  static Future<void> cancelDailyReviewReminder() async {
     // TODO: 毎日20時通知をキャンセル
   }
 }
+
+
+// TODOメモ
+// 参考URL
+// https://zenn.dev/koichi_51/articles/6921b2176ec29a
+// https://github.com/MaikuB/flutter_local_notifications/tree/master/flutter_local_notifications#displaying-a-notification
+// ・_onDidReceiveNotificationResponseの実装（Navigatorの実装？）
+// ・_onDidReceiveBackgroundNotificationResponseの実装（Navigatorの実装？）
+// ・通知を表示するの実装
+// ・通知を表示するために必要なフィールドの実装
+//  
