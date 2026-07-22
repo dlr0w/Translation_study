@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 // このクラスの責務
 // 通知プラグインの初期化
@@ -21,6 +24,8 @@ class LocalNotificationService {
   static Future<void> initialize({
     required void Function(String? payload) onTap,
   }) async {
+    // タイムゾーンを初期化
+    await _initializeTimeZone();
     // TODO: 通知プラグインを初期化
     // Android 初期設定（引数にはアプリのアイコンが保存されているパスを指定。）
     const AndroidInitializationSettings initializationSettingsAndroid =
@@ -58,7 +63,7 @@ class LocalNotificationService {
           android: initializationSettingsAndroid,
           iOS: initializationSettingsIOS,
           macOS: initializationSettingsDarwin,
-          windows: initializationSettingsWindows,          
+          windows: initializationSettingsWindows,
         );
 
     // プラグインの初期化
@@ -81,6 +86,17 @@ class LocalNotificationService {
     } else {
       debugPrint('通知権限のリクエストはサポートされていません');
     }
+  }
+
+  static Future<void> _initializeTimeZone() async {
+    tz.initializeTimeZones();
+
+    // ローカルタイムゾーンを設定
+    final timezoneInfo = await FlutterTimezone.getLocalTimezone();
+    // タイムゾーン情報からロケーションを取得
+    final location = tz.getLocation(timezoneInfo.identifier);
+    // ロケーションをローカルタイムゾーンとして設定
+    tz.setLocalLocation(location);
   }
 
   // 通知を出してよいか、iOSに確認
@@ -106,9 +122,15 @@ class LocalNotificationService {
   }
 
   // 通知のタップ時の処理
-  static Future<void> _onDidReceiveNotificationResponse(NotificationResponse response) async {
+  static Future<void> _onDidReceiveNotificationResponse(
+    NotificationResponse response,
+  ) async {
     // ここに処理を記載
-    debugPrint('onDidReceiveNotificationResponse: $response');    
+    final payload = response.payload;
+    if (payload != null) {
+      debugPrint('通知がタップされました！: $payload');
+    }
+    debugPrint('onDidReceiveNotificationResponse: $response');
     // final String? payload = notificationResponse.payload;
     // if (notificationResponse.payload != null) {
     //   debugPrint('notification payload: $payload');
@@ -120,7 +142,9 @@ class LocalNotificationService {
   }
 
   // バックグラウンドで通知を受け取った時の処理
-  static Future<void> _onDidReceiveBackgroundNotificationResponse(NotificationResponse response) async {
+  static Future<void> _onDidReceiveBackgroundNotificationResponse(
+    NotificationResponse response,
+  ) async {
     debugPrint('onDidReceiveBackgroundNotificationResponse: $response');
   }
 
@@ -143,4 +167,4 @@ class LocalNotificationService {
 // ・_onDidReceiveBackgroundNotificationResponseの実装（Navigatorの実装？）
 // ・通知を表示するの実装
 // ・通知を表示するために必要なフィールドの実装
-//  
+//

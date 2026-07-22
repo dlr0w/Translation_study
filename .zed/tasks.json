@@ -1,12 +1,9 @@
 [
   {
     "label": "開発環境を起動",
-    "command": "powershell.exe",
+    "command": "& 'C:\\Program Files\\Git\\bin\\bash.exe'",
     "args": [
-      "-ExecutionPolicy",
-      "Bypass",
-      "-File",
-      "$ZED_WORKTREE_ROOT\\scripts\\start-dev.ps1"
+      "$ZED_WORKTREE_ROOT/scripts/start-dev.sh"
     ],
     "cwd": "$ZED_WORKTREE_ROOT",
     "use_new_terminal": true,
